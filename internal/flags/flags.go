@@ -21,6 +21,13 @@ type Flags struct {
 	LogLevel       *slog.Level   // log verbosity level
 	Timeout        time.Duration // helm client timeout
 	Version        bool          // show version
+
+	// VerifyRetries is how many times helm test runs after each chart deploy
+	// (default 3). Set via framework.WithVerifyRetries; not a CLI flag.
+	VerifyRetries int
+	// VerifyRetryDelay is the pause between failed helm test attempts
+	// (default 1m). Set via framework.WithVerifyRetryDelay; not a CLI flag.
+	VerifyRetryDelay time.Duration
 }
 
 // PersistentFlags sets up the global flags.
@@ -89,11 +96,13 @@ func NewFlags() *Flags {
 		kubeConfigPath = path.Join(usr.HomeDir, ".kube", "config")
 	}
 	return &Flags{
-		DryRun:         false,
-		KubeConfigPath: kubeConfigPath,
-		LogLevel:       &defaultLogLevel,
-		Timeout:        15 * time.Minute,
-		Verbose:        false,
-		Version:        false,
+		DryRun:           false,
+		KubeConfigPath:   kubeConfigPath,
+		LogLevel:         &defaultLogLevel,
+		Timeout:          15 * time.Minute,
+		Verbose:          false,
+		Version:          false,
+		VerifyRetries:    3,
+		VerifyRetryDelay: time.Minute,
 	}
 }

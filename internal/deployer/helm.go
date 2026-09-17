@@ -146,16 +146,26 @@ func (h *Helm) Verify() error {
 }
 
 // VerifyWithRetry attempts to verify the Helm deployment multiple times with a
-// delay between retries.
+// delay between retries. Attempt count and delay come from flags (defaults: 3
+// attempts, 1 minute); consumers can override via framework.WithVerifyRetries
+// and framework.WithVerifyRetryDelay.
 func (h *Helm) VerifyWithRetry() error {
+	retries := h.flags.VerifyRetries
+	if retries < 1 {
+		retries = 1
+	}
+	delay := h.flags.VerifyRetryDelay
+	if delay < 0 {
+		delay = 0
+	}
+
 	var err error
-	retries := 3
 	for i := 1; i <= retries; i++ {
 		err = h.Verify()
 		if err == nil || i == retries {
 			break
 		}
-		time.Sleep(time.Minute)
+		time.Sleep(delay)
 	}
 	return err
 }

@@ -33,7 +33,7 @@ func (f *FakeKube) BatchV1ClientSet(
 }
 
 func (f *FakeKube) ClientSet(string) (kubernetes.Interface, error) {
-	cs := fake.NewSimpleClientset(f.objects...)
+	cs := fake.NewClientset(f.objects...)
 
 	// Add reactor to automatically set namespace status to Active when created
 	cs.PrependReactor(
