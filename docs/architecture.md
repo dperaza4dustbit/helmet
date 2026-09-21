@@ -120,7 +120,7 @@ Each chart deployment runs in its configured namespace.
 
 ### 5. Helm Tests
 
-The `Installer` calls `Helm.VerifyWithRetry()`, which runs `action.ReleaseTesting` (equivalent to `helm test`) with up to 3 attempts and 1-minute delays between retries.
+The `Installer` calls `Helm.VerifyWithRetry()`, which runs `action.ReleaseTesting` (equivalent to `helm test`). By default that is up to 3 attempts with a 1-minute delay between failures. Consumers can override the attempt count and delay with `framework.WithVerifyRetries` and `framework.WithVerifyRetryDelay` (for example a workshop installer that wants a single fast-fail attempt).
 
 ### 6. Monitor Readiness
 

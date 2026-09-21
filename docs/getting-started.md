@@ -119,6 +119,7 @@ if err := app.Run(); err != nil {
 - `framework.NewAppFromTarball()` constructs the app from the embedded tarball
 - The `cwd` parameter enables the [overlay filesystem](installer-structure.md#overlay-filesystem) for development
 - `framework.WithImage()` sets the container image for [MCP Job-based deployments](mcp.md#container-image-for-job-based-deployment)
+- `framework.WithVerifyRetries()` / `WithVerifyRetryDelay()` optionally override post-deploy `helm test` retry defaults (3 attempts, 1 minute)
 
 ## Building
 
